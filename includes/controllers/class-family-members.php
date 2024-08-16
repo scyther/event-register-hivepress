@@ -40,13 +40,6 @@ final class Family_Members extends Controller
 						'rest' => true,
 					],
 
-					// 'vendors_unfollow_action' => [
-					// 	'base' => 'vendors_resource',
-					// 	'path' => '/unfollow',
-					// 	'method' => 'POST',
-					// 	'action' => [$this, 'unfollow_vendors'],
-					// 	'rest' => true,
-					// ],
 				],
 
 			],
@@ -107,9 +100,8 @@ final class Family_Members extends Controller
 			new Blocks\Template(
 				[
 					'template' => 'user_family_panel_page',
-
 					'context' => [
-						'listings' => [],
+					  'family_members' => $query->get(),
 					],
 				]
 			)
@@ -135,6 +127,7 @@ final class Family_Members extends Controller
 		$userId = get_current_user_id();
 		$name = $request->get_param('name');
 		$age = $request->get_param('age');
+		$relation = $request->get_param('relation');
 
 
 		// Get Members.
@@ -153,9 +146,10 @@ final class Family_Members extends Controller
 			// Add new follow.
 			$member = (new Models\Family_Member())->fill(
 				[
-					'name' => $name,
+					'member_name' => $name,
 					'age' => $age,
 					'family_owner' => $userId,
+					'relation' => $relation,
 				]
 			);
 
@@ -167,7 +161,7 @@ final class Family_Members extends Controller
 		return hp\rest_response(
 			200,
 			[
-				'data' => [],
+				'id' => $member->get_id(),
 			]
 		);
 	}

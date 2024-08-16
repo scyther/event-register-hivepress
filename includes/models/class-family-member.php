@@ -28,10 +28,16 @@ class Family_Member extends Post
 						'_alias' => 'age',
 						'_model' => 'family_member',
 					],
-					'name' => [
+					'member_name' => [
 						'type' => 'string',
 						'required' => true,
-						'_alias' => 'name',
+						'_alias' => 'member_name',
+						'_model' => 'family_member',
+					],
+					'relation' => [
+						'type' => 'string',
+						'required' => true,
+						'_alias' => 'relation',
 						'_model' => 'family_member',
 					],
 					'family_owner' => [
@@ -47,4 +53,8 @@ class Family_Member extends Post
 
 		parent::__construct($args);
 	}
+
+final public function get_Name(){
+	return $this->get_field_name("member_name");
+}
 }

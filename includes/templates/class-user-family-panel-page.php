@@ -24,34 +24,15 @@ class User_Family_Panel_Page extends User_Account_Page
 				'blocks' => [
 					'page_content' => [
 						'blocks' => [
-							'listings' => [
-								'type' => 'listings',
-								'columns' => 2,
+							'family_members' => [
+								'type' => 'part',
+								'path' => 'user-account/family-members',
 								'_order' => 10,
 							],
-
-							// 'listing_pagination' => [
-							// 	'type' => 'part',
-							// 	'path' => 'page/pagination',
-							// 	'_order' => 20,
-							// ],
-							// 'vendors_unfollow_link' => [
-							// 	'type' => 'part',
-							// 	'path' => 'vendor/follow/vendors-unfollow-link',
-							// 	'_order' => 30,
-							// ],
-
-							// 'vendors_unfollow_modal' => [
-							// 	'title' => esc_html__('Unfollow Vendors', 'foo-followers'),
-							// 	'type' => 'modal',
-
-							// 	'blocks' => [
-							// 		'vendors_unfollow_form' => [
-							// 			'type' => 'form',
-							// 			'form' => 'vendors_unfollow',
-							// 		],
-							// 	],
-							// ],
+							'add_member_form' => [
+								'type' => 'form',
+								'form' => 'add_family_member',
+							],
 						],
 					],
 				],
