@@ -39,6 +39,13 @@ final class Family_Members extends Controller
 						'action' => [$this, 'add_family_member'],
 						'rest' => true,
 					],
+					'get_family_members_action' => [
+						'base' => 'user_account_page',
+						'path' => '/get-family-members',
+						'method' => 'GET',
+						'action' => [$this, 'get_family_members'],
+						'rest' => true,
+					],
 
 				],
 
@@ -166,6 +173,36 @@ final class Family_Members extends Controller
 		);
 	}
 
+	/**
+	 * Get family members.
+	 *
+	 * @param \WP_REST_Request $request API request.
+	 * @return \WP_Rest_Response \WP_Rest_Response
+	 */
+	public function get_family_members($request)
+	{
+
+		// Check authentication.
+		if (!is_user_logged_in()) {
+			return hp\rest_error(401);
+		}
+
+		$userId = get_current_user_id();
+
+		// Get Members.
+		$members = Models\Family_Member::query()->filter(
+			[
+				'family_owner' => $userId,
+			]
+		)->get();
+
+		return hp\rest_response(
+			200,
+			[
+				'members' => $members,
+			]
+		);
+	}
 
 
 }

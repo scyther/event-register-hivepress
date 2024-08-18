@@ -9,7 +9,7 @@ defined('ABSPATH') || exit;
 /**
  * Model class.
  */
-class Family_Member extends Comment
+class Listing_Order extends Comment
 {
 
 	/**
@@ -39,7 +39,7 @@ class Family_Member extends Comment
 						'required' => true,
 						'_alias' => 'comment_author_IP',
 					],
-					'family_owner' => [
+					'user' => [
 						'type' => 'id',
 						'required' => true,
 						"_alias" => "user_id",
@@ -52,6 +52,5 @@ class Family_Member extends Comment
 
 		parent::__construct($args);
 	}
-
 
 }

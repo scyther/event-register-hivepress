@@ -27,6 +27,8 @@ final class Family_Members extends Component
 		add_filter('hivepress/v1/menus/user_account', [$this, 'add_menu_item']);
 		add_filter('hivetheme/v1/areas/site_header', [$this, 'add_header_button']);
 		// add_filter('hivepress/v1/styles', [$this, 'add_styles']);
+		// add_filter( 'hivepress/v1/templates/listing_view_block', [ $this, 'alter_listing_view_block' ] );
+		add_filter('hivepress/v1/templates/listing_view_page', [$this, 'alter_listing_view_page']);
 		parent::__construct($args);
 	}
 
@@ -97,16 +99,17 @@ final class Family_Members extends Component
 	 *
 	 * @return string
 	 */
-	public function add_header_button() {
-			return (
-				new Part(
-					[
-						'type' => 'part',
-						'path' => 'navbar/register-family-link',
-						'_order' => 10,
-					]
-				)
-			)->render();
+	public function add_header_button()
+	{
+		return (
+			new Part(
+				[
+					'type' => 'part',
+					'path' => 'navbar/register-family-link',
+					'_order' => 10,
+				]
+			)
+		)->render();
 	}
 
 
@@ -120,78 +123,91 @@ final class Family_Members extends Component
 	// 	return $styles;
 	// }
 
+
+
+	// /**
+	//  * Alters listing view block.
+	//  *
+	//  * @param array $template Template arguments.
+	//  * @return array
+	//  */
+	// public function alter_listing_view_block( $template ) {
+	// 	return hp\merge_trees(
+	// 		$template,
+	// 		[
+	// 			'blocks' => [
+	// 				'listing_actions_primary' => [
+	// 					'blocks' => [
+	// 						// 'message_send_modal' => [
+	// 						// 	'type'        => 'modal',
+	// 						// 	'model'       => 'listing',
+	// 						// 	'title'       => hivepress()->translator->get_string( 'reply_to_listing' ),
+	// 						// 	'_capability' => 'read',
+	// 						// 	'_order'      => 5,
+
+	// 						// 	'blocks'      => [
+	// 						// 		'message_send_form' => [
+	// 						// 			'type'   => 'message_send_form',
+	// 						// 			'_order' => 10,
+	// 						// 		],
+	// 						// 	],
+	// 						// ],
+
+	// 						'message_send_link'  => [
+	// 							'type'   => 'part',
+	// 							'path'   => 'listing/join-lisitng-link',
+	// 							'_order' => 10,
+	// 						],
+	// 					],
+	// 				],
+	// 			],
+	// 		]
+	// 	);
+	// }
+
 	/**
-	 * Renders family page.
+	 * Alters listing view page.
 	 *
-	 * @return string
+	 * @param array $template Template arguments.
+	 * @return array
 	 */
-	public function render_family_page()
+	public function alter_listing_view_page($template)
 	{
-
-		// Create listing query.
-		$query = Models\Family_Member::query()->filter(
+		return hp\merge_trees(
+			$template,
 			[
-				'family_member__in' => hivepress()->request->get_context('user_family_members'),
-			]
-		)->order(['created_date' => 'desc'])
-			->limit(get_option('hp_listings_per_page'))
-			->paginate(hivepress()->request->get_page_number());
+				'blocks' => [
+					'listing_actions_primary' => [
+						'blocks' => [
+							// 'message_send_modal' => [
+							// 	'type'        => 'modal',
+							// 	'model'       => 'listing',
+							// 	'title'       => hivepress()->translator->get_string( 'reply_to_listing' ),
+							// 	'_capability' => 'read',
+							// 	'_order'      => 5,
 
-		// Set request context.
-		hivepress()->request->set_context(
-			'post_query',
-			$query->get_args()
-		);
+							// 	'blocks'      => [
+							// 		'message_send_form' => [
+							// 			'type'   => 'message_send_form',
+							// 			'_order' => 10,
+							// 		],
+							// 	],
+							// ],
+							'join_listing_form' => [
+								'type' => 'form',
+								'form' => 'join_listing',
+							],
 
-		// Render page template.
-		return (
-			new Blocks\Template(
-				[
-					'template' => 'user_family_panel_page',
-
-					'context' => [
-						'listings' => [],
+							// 'message_send_link'  => [
+							// 	'type'   => 'part',
+							// 	'path'   => 'listing/join-lisitng-link',
+							// 	'_order' => 10,
+							// ],
+						],
 					],
-				]
-			)
-		)->render();
-	}
-
-	/**
-	 * Follows or unfollows vendor.
-	 *
-	 * @param \WP_REST_Request $request API request.
-	 * @return \WP_Rest_Response \WP_Rest_Response
-	 */
-	public function add_family_member($request)
-	{
-
-		// Check authentication.
-		if (!is_user_logged_in()) {
-			return hp\rest_error(401);
-		}
-
-		$userId = get_current_user_id();
-		$name = $request->get_param('name');
-		$age = $request->get_param('age');
-		$relation = $request->get_param('relation');
-
-		// Create model.
-		$family_member = new Models\Family_Member(
-			[
-				'family_owner' => $userId,
-				'member_name' => $name,
-				'age' => $age,
-				'relation' => $relation,
-			]
-		);
-
-		// Save model.
-		$family_member->save();
-		return hp\rest_success(
-			[
-				'message' => esc_html__('Family member has been added', 'hivepress'),
+				],
 			]
 		);
 	}
+
 }
