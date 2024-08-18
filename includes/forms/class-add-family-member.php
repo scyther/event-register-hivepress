@@ -53,7 +53,6 @@ class Add_Family_Member extends Model_Form
 					'member_name' => [
 						'label' => 'Name',
 						'required' => true,
-						'placeholder' => 'Name',
 						'type' => 'text',
 						'_order' => 10,
 					],

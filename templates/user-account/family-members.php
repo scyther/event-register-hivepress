@@ -1,16 +1,18 @@
 <?php
+echo '<table>';
 
-// $familyMembers = array(
-//   'John Doe',
-//   'Jane Doe',
-//   'Tom Smith',
-//   'Emily Johnson'
-// );
-
-echo '<ul>';
+echo '<tr>';
+echo '<td> Name </td>';
+echo '<td> Age </td>';
+echo '<td> Relation </td>';
+echo '</tr>';
 foreach ($family_members as $member) {
-  echo '<li>' . $member->get_id() . '</li>';
-}
-echo '</ul>';
 
+  echo '<tr>';
+  echo '<td>' . $member->get_member_name() . '</td>';
+  echo '<td>' . $member->get_age() . '</td>';
+  echo '<td>' . $member->get_relation() . '</td>';
+  echo '</tr>';
+}
+echo '</table>';
 ?>

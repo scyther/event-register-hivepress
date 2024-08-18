@@ -125,7 +125,7 @@ final class Family_Members extends Controller
 		}
 
 		$userId = get_current_user_id();
-		$name = $request->get_param('name');
+		$member_name = $request->get_param('member_name');
 		$age = $request->get_param('age');
 		$relation = $request->get_param('relation');
 
@@ -134,7 +134,7 @@ final class Family_Members extends Controller
 		$members = Models\Family_Member::query()->filter(
 			[
 				'family_owner' => $userId,
-				'name' => $name,
+				'member_name' => $member_name,
 				'age' => $age,
 			]
 		)->get();
@@ -146,7 +146,7 @@ final class Family_Members extends Controller
 			// Add new follow.
 			$member = (new Models\Family_Member())->fill(
 				[
-					'member_name' => $name,
+					'member_name' => $member_name,
 					'age' => $age,
 					'family_owner' => $userId,
 					'relation' => $relation,
